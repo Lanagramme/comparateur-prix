@@ -1,0 +1,18 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			function postManga(name){
+				data = {name: name}
+				$.ajax({
+					type: "POST",
+					url: "/post/user",
+					data: data
+				})
+			}
+		</script>
+
+	</body>
+</html>
