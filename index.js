@@ -21,9 +21,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 4000
 
 // CLASSES
-function User(name){
-	this.name = name
-	this.id = Date.now()
+class User {
+	constructor(name) {
+		this.name = name
+		this.id = Date.now()
+	}
+}
+
+class Produit {
+	constructor() {
+		this.id = Date.now()
+		this.name
+		this.categorie
+		this.prix
+		this.poids
+		this.unite
+		this.magasin
+	}
 }
 
 // FUNCTIONS
@@ -32,18 +46,19 @@ const DEBUG = (msg) => {
 	debug && console.log("DEBUG => ", msg)
 }
 
-async function readAll(res, item){
+async function readAll(res, collection){
 		await db.read()
-		DEBUG(db.data[item])
-		return res.json(db.data[item])
+		DEBUG(db.data[collection])
+		return res.json(db.data[collection])
 }
 
 async function readOne(res, id, collection){
 		DEBUG(`Collection:: ${collection}; Item:: ${id}`)
 		await db.read()
 		const item = db.data[collection].find(x => x.id == id) 
-		DEBUG(item ? item : `item not found in collection :: ${collection}`)
-		return res.json(item ? item : `item not found in collection :: ${collection}`)
+		const message =  `item not found in collection :: ${collection}`
+		DEBUG(item ? item : message)
+		return res.json(item ? item : message)
 }
 
 async function addOne(res, name, collection, Class){
@@ -52,8 +67,9 @@ async function addOne(res, name, collection, Class){
 	const bdd = db.data[collection]
 	const already_exist = bdd.find(entity => entity.name == name)
 	if (already_exist){
-		DEBUG( `There is already an entity in the collection ${collection} with the name ${name}.`)
-		return res.json({error: `There is already an entity in the collection ${collection} with the name ${name}.`})
+		const message =  `There is already an entity in the collection ${collection} with the name ${name}.`
+		DEBUG(message)
+		return res.json({error: message})
 	}
 	else DEBUG(`The name ${name} is free`)
 	db.data.users.push(new Class(name))
@@ -68,11 +84,6 @@ app.get('/', (req, res) => {
 app.get('/users', (req, res) => {
 	readAll(res, 'users')
 })
-
-app.get('/mangas', (req, res) => {
-	readAll(res, 'mangas')
-})
-
 
 app.get('/user/:id', (req, res) => {
 	readOne(res, req.params.id, "users")
