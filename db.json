@@ -1,0 +1,40 @@
+{
+  "produits": [
+    {
+      "id": 1655966728915,
+      "name": "Riz basmati",
+      "instances": [
+        1655969416382
+      ]
+    }
+  ],
+  "users": [],
+  "instances": [
+    {
+      "_id": 1655969416382,
+      "name": "Riz basmaty eco",
+      "category": "Riz basmati",
+      "price": "1.23",
+      "quantity": "1",
+      "unit": "Kg",
+      "magasin": "1655966658473",
+      "produit": 1655969416382
+    }
+  ],
+  "magasins": [
+    {
+      "_id": "1655966658473",
+      "name": "Carrefour market",
+      "adress": "St Rose",
+      "produits": [
+        1655969416382
+      ]
+    },
+    {
+      "_id": 1655966701301,
+      "name": "Carrefour Millenis",
+      "adress": "Abymes, Dothemare",
+      "produits": []
+    }
+  ]
+}

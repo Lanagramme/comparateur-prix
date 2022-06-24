@@ -13,6 +13,13 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
+await db.read()
+
+if (!db.data) db.data = {}
+for (let i of ['produits','users',"instances", "magasins"]) {
+	if (!db.data.hasOwnProperty(i)) db.data[i] = []
+}
+
 const app = express()
 app.use(cors())
 // app.use(bodyParser.json())
@@ -28,17 +35,36 @@ class User {
 	}
 }
 
-class Produit {
-	constructor() {
-		this.id = Date.now()
-		this.name
-		this.categorie
-		this.prix
-		this.poids
-		this.unite
-		this.magasin
+class Magasin {
+	constructor(params) {
+		this._id = Date.now()
+		this.name = params.name
+		this.adress = params.adress
+		this.produits = []
 	}
 }
+
+class Produit {
+	constructor(name) {
+		this.id = Date.now()
+		this.name = name
+		this.instances = []
+	}
+}
+
+class Instance {
+	constructor(params) {
+		this._id = Date.now()
+		this.name = params.name
+		this.category = params.category
+		this.price = params.price
+		this.quantity = params.quantity
+		this.unit = params.unit
+		this.magasin = params.magasin
+	}
+}
+
+function prix_relatif(data){ return `${data.prix / data.quantite} € par ${data.unite}` }
 
 // FUNCTIONS
 const DEBUG = (msg) => {
@@ -61,37 +87,72 @@ async function readOne(res, id, collection){
 		return res.json(item ? item : message)
 }
 
-async function addOne(res, name, collection, Class){
-	DEBUG(`Collection:: ${collection}; Item:: ${name}`)
+async function addOne(res, item, collection){
+	DEBUG(`Collection:: ${collection}; Item:: ${item.name}`)
 	await db.read()
-	const bdd = db.data[collection]
-	const already_exist = bdd.find(entity => entity.name == name)
-	if (already_exist){
-		const message =  `There is already an entity in the collection ${collection} with the name ${name}.`
-		DEBUG(message)
-		return res.json({error: message})
-	}
-	else DEBUG(`The name ${name} is free`)
-	db.data.users.push(new Class(name))
+
+	if (!db.data.hasOwnProperty(collection)) return res.json({ message: "unknown collection" })
+	db.data[collection].push(item)
+
 	await db.write()
 	return res.json({ success: 'Success !!'})
 }
 
+async function addInstance(res, params){
+	await db.read()
+
+	let produit = db.data.produits.find(x => x.name == params.category)
+	if (!produit) return res.json({message: "no article under this name"})
+	let magasin = db.data.magasins.find(x => x._id = params.magasin)
+	if (!magasin) return res.json({message: " magasin not found"})
+
+	const instance = new Instance(params)
+	instance.magasin = magasin._id
+	instance.produit = instance._id 
+
+	db.data.instances.push(instance)
+	magasin.produits.push(instance._id)
+	produit.instances.push(instance._id)
+
+	await db.write()
+	return res.json({message: "success"})
+}
+
 // MIDDLEWARES
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, './index.html'))
+	res.sendFile(path.join(__dirname, './public/index.html'))
 })
-app.get('/users', (req, res) => {
-	readAll(res, 'users')
+app.get('/js/:file', (req, res) => {
+	res.sendFile(path.join(__dirname, `./public/js/`+req.params.file)) 
+})
+app.get('/css/:file', (req, res) => {
+	res.sendFile(path.join(__dirname, `./public/js/`+req.params.file)) 
 })
 
-app.get('/user/:id', (req, res) => {
-	readOne(res, req.params.id, "users")
+app.get('/all', (req, res) => { res.json(db.data) })
+
+app.get('/users', (req, res) => { readAll(res, 'users') })
+app.get('/user/:id', (req, res) => { readOne(res, req.params.id, "users") })
+app.post('/post/user', (req,res) => { 
+	addOne(res, new User(req.body.name), 'users') 
 })
 
-app.post('/post/user', (req,res) => {
-	addOne(res, req.body.name, 'users', User)
+app.get('/magasins', (req, res) => { readAll(res, 'magasins') })
+app.get('/magasin/:id', (req, res) => { readOne(res, req.params.id, "magasins") })
+app.post('/post/magasin', (req,res) => {
+	addOne(res, new Magasin(req.body), 'magasins') 
 })
+
+app.get('/produits', (req, res) => { readAll(res, 'produits') })
+app.get('/produit/:id', (req, res) => { readOne(res, req.params.id, "produits") })
+app.post('/post/produit', (req,res) => {
+	addOne(res, new Produit(req.body.name), 'produits') 
+})
+app.post('/post/instance', (req,res) => {
+	addInstance(res, req.body)
+})
+
+function test(res) { return res.json('test') }
 
 app.post('/post/data/test', (req,res) => {
 	console.log(req.body)
