@@ -119,6 +119,9 @@ async function addInstance(res, params){
 }
 
 // MIDDLEWARES
+app.set('view', "./view")
+app.set('view engine', 'pug')
+
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, './public/index.html'))
 })
