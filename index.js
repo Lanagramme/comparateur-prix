@@ -119,53 +119,26 @@ async function addInstance(res, params){
 }
 
 // MIDDLEWARES
-// app.set('view', "./views")
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug')
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
-// app.get('/', (req, res) => {
-// 	res.sendFile(path.join(__dirname, './public/index.html'))
-// })
-// app.get('/js/:file', (req, res) => {
-// 	res.sendFile(path.join(__dirname, `./public/js/`+req.params.file)) 
-// })
-// app.get('/css/:file', (req, res) => {
-// 	res.sendFile(path.join(__dirname, `./public/js/`+req.params.file)) 
-// })
+app.get('/', (req, res) => { res.render('index'); });
 
 app.get('/all', (req, res) => { res.json(db.data) })
 
 app.get('/users', (req, res) => { readAll(res, 'users') })
 app.get('/user/:id', (req, res) => { readOne(res, req.params.id, "users") })
-app.post('/post/user', (req,res) => { 
-	addOne(res, new User(req.body.name), 'users') 
-})
+app.post('/post/user', (Q,S) => { addOne(S, new User(Q.body.name), 'users') })
 
 app.get('/magasins', (req, res) => { readAll(res, 'magasins') })
 app.get('/magasin/:id', (req, res) => { readOne(res, req.params.id, "magasins") })
-app.post('/post/magasin', (req,res) => {
-	addOne(res, new Magasin(req.body), 'magasins') 
-})
+app.post('/post/magasin', (Q,S) => { addOne(S, new Magasin(Q.body), 'magasins') })
 
 app.get('/produits', (req, res) => { readAll(res, 'produits') })
 app.get('/produit/:id', (req, res) => { readOne(res, req.params.id, "produits") })
-app.post('/post/produit', (req,res) => {
-	addOne(res, new Produit(req.body.name), 'produits') 
-})
-app.post('/post/instance', (req,res) => {
-	addInstance(res, req.body)
-})
+app.post('/post/produit', (Q,S) => {addOne(S, new Produit(Q.body.name), 'produits')})
 
-function test(res) { return res.json('test') }
+app.post('/post/instance', (req,res) => { addInstance(res, req.body) })
 
-app.post('/post/data/test', (req,res) => {
-	console.log(req.body)
-})
-
-app.listen(PORT, () => {
-	console.log('Server connected on port ', PORT)
-})
+app.listen(PORT, () => { console.log('Server connected on port ', PORT) })
