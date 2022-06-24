@@ -108,7 +108,7 @@ async function addInstance(res, params){
 
 	const instance = new Instance(params)
 	instance.magasin = magasin._id
-	instance.produit = instance._id 
+	instance.produit = produit._id 
 
 	db.data.instances.push(instance)
 	magasin.produits.push(instance._id)
@@ -123,7 +123,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug')
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => { res.render('index'); });
+app.get('/', (req, res) => { 
+	let articles = db.data.instances
+	// console.log(articles)
+	for (let i in articles) {
+		let item = articles[i]
+		let mag = db.data.magasins.find(x => x._id == item.magasin)
+		console.log("++++++++++++++++++++")
+		console.log(item)
+		console.log(mag)
+		item.magasin = mag.name
+	}
+	db.read()
+	res.render('index', { articles: articles }); 
+});
 
 app.get('/all', (req, res) => { res.json(db.data) })
 

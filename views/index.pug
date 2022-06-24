@@ -1,6 +1,24 @@
 extends layout
 
 block content
-    script(src="/js/jquery-3.6.0.min.js")
-    script(src="/js/main.js")
-        
+	include navbar.pug
+	
+	.container
+		table.table
+			thead
+				tr
+					th(scope='col') #
+					th(scope='col') Article
+					th(scope='col') Categorie
+					th(scope='col') Prix
+					th(scope='col') Quantite
+					th(scope='col') Unite
+			tbody
+				each article, index in articles
+					tr
+						th(scope='row')= index + 1
+							td= article.name
+							td= article.category
+							td= article.price
+							td= article.quantity
+							td= article.unit

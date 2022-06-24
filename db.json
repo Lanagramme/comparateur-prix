@@ -4,21 +4,20 @@
       "id": 1655966728915,
       "name": "Riz basmati",
       "instances": [
-        1655969416382
+        1656104544126
       ]
     }
   ],
   "users": [],
   "instances": [
     {
-      "_id": 1655969416382,
+      "_id": 1656104544126,
       "name": "Riz basmaty eco",
       "category": "Riz basmati",
       "price": "1.23",
       "quantity": "1",
       "unit": "Kg",
-      "magasin": "1655966658473",
-      "produit": 1655969416382
+      "magasin": "1655966658473"
     }
   ],
   "magasins": [
@@ -27,7 +26,7 @@
       "name": "Carrefour market",
       "adress": "St Rose",
       "produits": [
-        1655969416382
+        1656104544126
       ]
     },
     {
