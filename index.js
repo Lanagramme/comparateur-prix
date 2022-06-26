@@ -25,7 +25,7 @@ app.use(cors())
 // app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 
 // CLASSES
 class User {
@@ -149,5 +149,6 @@ app.get('/produit/:id', (req, res) => { readOne(res, req.params.id, "produits") 
 app.post('/post/produit', (Q,S) => {addOne(S, new Produit(Q.body.name), 'produits')})
 
 app.post('/post/instance', (req,res) => { addInstance(res, req.body) })
+
 
 app.listen(PORT, () => { console.log('Server connected on port ', PORT) })
