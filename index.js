@@ -9,7 +9,7 @@ import path from 'path'
 
 // CONSTANTS
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const file = join(__dirname, 'db.json')
+const file = join(__dirname, './db/db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 
