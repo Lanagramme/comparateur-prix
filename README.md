@@ -1,0 +1,35 @@
+# Comparateur de prix
+
+## Fonctions
+	- [.] CRUD
+		- [x] Create
+			- [x] Ajouter un magasin
+			- [x] Ajouter un produit
+			- [x] Ajouter une instance
+		- [x] Read
+			- [x] Lire toute la base
+			- [x] Lire tous les magasins
+			- [x] Lire tous les produits
+			- [x] Lire tous les instances
+		- [ ] Supprimer une entité
+		- [ ] Mettre à jour une entité
+	- [ ] Formulaire d'ajout Front-end
+		- [ ] magasin
+		- [ ] produit
+		- [ ] instance
+	- [x] Affichage en back end
+			- [x] Afficher toutes les instances
+	- [ ] Affichage en front-side
+		- [ ] Templating
+		- [ ] Afficher les entités
+			- [ ] Afficher toutes les instances
+			- [ ] Afficher touts les produits
+				- [ ] Afficher les instances d'un produit
+			- [ ] Afficher touts les magasins
+				- [ ] Afficher le contenu d'un magasin
+	- [ ] Tri des instances
+		- [ ] Trier les instances par magasin
+		- [ ] Trier les instances par produit
+		- [ ] Trier les instances par prix par unite
+		- [ ] Trier les instances avec plusieurs filtres
+	- [ ] 
