@@ -13,6 +13,7 @@ block content
 					th(scope='col') Prix
 					th(scope='col') Quantite
 					th(scope='col') Unite
+					th(scope='col') Magasin
 			tbody
 				each article, index in articles
 					tr
@@ -22,3 +23,4 @@ block content
 							td= article.price
 							td= article.quantity
 							td= article.unit
+							td= article.magasin

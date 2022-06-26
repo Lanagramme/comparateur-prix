@@ -125,13 +125,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => { 
 	let articles = db.data.instances
-	// console.log(articles)
 	for (let i in articles) {
 		let item = articles[i]
 		let mag = db.data.magasins.find(x => x._id == item.magasin)
-		console.log("++++++++++++++++++++")
-		console.log(item)
-		console.log(mag)
 		item.magasin = mag.name
 	}
 	db.read()
